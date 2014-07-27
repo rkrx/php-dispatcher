@@ -1,5 +1,5 @@
 {
-	"name": "rkr/php-dispatcher",
+	"name": "rkr/dispatcher",
 	"description": "A simple dispatcher with dependency injection support",
 	"homepage": "https://github.com/rkrx/php-dispatcher",
 	"license": "MIT",

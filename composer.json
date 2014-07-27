@@ -1,0 +1,35 @@
+{
+	"name": "rkr/php-dispatcher",
+	"description": "A simple dispatcher with dependency injection support",
+	"homepage": "https://github.com/rkrx/php-dispatcher",
+	"license": "MIT",
+	"type": "library",
+	"minimum-stability": "stable",
+	"authors": [{
+		"name": "Ron Kirschler",
+		"email": "ron.kirschler@gmail.com"
+	}],
+	"require": {
+		"php": ">= 5.3.0",
+		"rkr/php-array-utils": "dev-master"
+	},
+	"require-dev": {
+		"phpunit/phpunit": "3.7.*"
+	},
+	"autoload": {
+		"psr-4": {
+			"Kir\\Http\\Routing\\": "src/"
+		},
+		"files": [
+			"src/Tools/functions.php"
+		]
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Kir\\Http\\Routing\\": ["src/", "tests/"]
+		}
+	},
+	"repositories": [{
+		"type": "vcs", "url": "https://github.com/rkrx/php-array-utils"
+	}]
+}

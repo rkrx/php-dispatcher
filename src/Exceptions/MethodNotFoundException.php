@@ -1,5 +1,5 @@
 <?php
-namespace Kir\Http\Routing\Exceptions;
+namespace Kir\Dispatching\Exceptions;
 
 class MethodNotFoundException extends Exception {
 

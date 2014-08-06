@@ -1,5 +1,5 @@
 <?php
-namespace Kir\Http\Routing;
+namespace Kir\Dispatching;
 
 use PHPUnit_Framework_TestCase;
 use ReflectionClass;

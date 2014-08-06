@@ -1,8 +1,8 @@
 <?php
-namespace Kir\Http\Routing\ServiceLocators;
+namespace Kir\Dispatching\ServiceLocators;
 
 use Closure;
-use Kir\Http\Routing\ServiceLocator;
+use Kir\Dispatching\ServiceLocator;
 
 class ClosureServiceLocator implements ServiceLocator {
 	/**

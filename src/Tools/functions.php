@@ -1,5 +1,5 @@
 <?php
-namespace Kir\Http\Routing\Tools;
+namespace Kir\Dispatching\Tools;
 
 /**
  * @return array

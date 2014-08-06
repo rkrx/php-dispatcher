@@ -1,9 +1,8 @@
 <?php
-namespace Kir\Http\Routing;
+namespace Kir\Dispatching;
 
-use Kir\Http\Routing\ServiceLocators\ClosureServiceLocator;
+use Kir\Dispatching\ServiceLocators\ClosureServiceLocator;
 use PHPUnit_Framework_TestCase;
-use ReflectionClass;
 
 class InstanceFactoryTest extends PHPUnit_Framework_TestCase {
 	public function testValueInjection() {

@@ -1,5 +1,5 @@
 <?php
-namespace Kir\Http\Routing;
+namespace Kir\Dispatching;
 
 use ReflectionClass;
 

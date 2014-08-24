@@ -26,4 +26,18 @@ class InstanceFactoryTest extends PHPUnit_Framework_TestCase {
 		$this->assertInstanceOf('Kir\\Dispatching\\Mock\\TestClass2', $instance);
 		$this->assertInstanceOf('Kir\\Dispatching\\Mock\\TestClass', $instance->test);
 	}
+
+	public function testServiceInjectionByClass() {
+		$simpleServiceLocator = new ClosureServiceLocator(function ($serviceName, InstanceFactory $injector) {
+			switch ($serviceName) {
+				case 'test':
+					return $injector->createInstance("Kir\\Dispatching\\Mock\\TestClass");
+			}
+			return null;
+		});
+		$injector = new InstanceFactory($simpleServiceLocator);
+		$instance = $injector->createInstance('Kir\\Dispatching\\Mock\\TestClass3');
+		$this->assertInstanceOf('Kir\\Dispatching\\Mock\\TestClass3', $instance);
+		$this->assertInstanceOf('Kir\\Dispatching\\Mock\\TestClass2', $instance->test);
+	}
 }

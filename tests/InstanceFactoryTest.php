@@ -8,8 +8,8 @@ class InstanceFactoryTest extends PHPUnit_Framework_TestCase {
 	public function testValueInjection() {
 		$injector = new InstanceFactory();
 		$injector->register('test', 123);
-		$instance = $injector->createInstance('Kir\\Http\\Routing\\Mock\\TestClass2');
-		$this->assertInstanceOf('Kir\\Http\\Routing\\Mock\\TestClass2', $instance);
+		$instance = $injector->createInstance('Kir\\Dispatching\\Mock\\TestClass2');
+		$this->assertInstanceOf('Kir\\Dispatching\\Mock\\TestClass2', $instance);
 		$this->assertEquals(123, $instance->test);
 	}
 
@@ -17,13 +17,13 @@ class InstanceFactoryTest extends PHPUnit_Framework_TestCase {
 		$simpleServiceLocator = new ClosureServiceLocator(function ($serviceName, InstanceFactory $injector) {
 			switch ($serviceName) {
 				case 'test':
-					return $injector->createInstance("Kir\\Http\\Routing\\Mock\\TestClass");
+					return $injector->createInstance("Kir\\Dispatching\\Mock\\TestClass");
 			}
 			return null;
 		});
 		$injector = new InstanceFactory($simpleServiceLocator);
-		$instance = $injector->createInstance('Kir\\Http\\Routing\\Mock\\TestClass2');
-		$this->assertInstanceOf('Kir\\Http\\Routing\\Mock\\TestClass2', $instance);
-		$this->assertInstanceOf('Kir\\Http\\Routing\\Mock\\TestClass', $instance->test);
+		$instance = $injector->createInstance('Kir\\Dispatching\\Mock\\TestClass2');
+		$this->assertInstanceOf('Kir\\Dispatching\\Mock\\TestClass2', $instance);
+		$this->assertInstanceOf('Kir\\Dispatching\\Mock\\TestClass', $instance->test);
 	}
 }

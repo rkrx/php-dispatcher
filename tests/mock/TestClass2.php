@@ -1,5 +1,5 @@
 <?php
-namespace Kir\Http\Routing\Mock;
+namespace Kir\Dispatching\Mock;
 
 class TestClass2 {
 	/**

@@ -70,13 +70,15 @@ class InstanceFactory {
 		$params = array();
 		foreach($constructor->getParameters() as $parameter) {
 			list($paramName, $className) = $this->getParamDetails($parameter);
-			if(array_key_exists($paramName, $this->values)) {
-				$registeredService = $this->values[$paramName];
+			if(array_key_exists($className, $this->values)) {
+				$registeredService = $this->values[$className];
 				if(is_callable($registeredService)) {
 					$params[] = call_user_func($registeredService);
 				} else {
 					$params[] = $registeredService;
 				}
+			} elseif(array_key_exists($paramName, $this->values)) {
+				$params[] = $this->values[$paramName];
 			} elseif($className !== null) {
 				$params[] = $this->getInstance($className);
 			} elseif($this->sl !== null && $this->sl->has($paramName)) {

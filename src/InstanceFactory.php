@@ -42,6 +42,17 @@ class InstanceFactory {
 	 * @param string $className
 	 * @return object
 	 */
+	public function getInstance($className) {
+		$that = $this;
+		return $this->cache->get($className, function () use ($className, $that) {
+			return $that->createInstance($className);
+		});
+	}
+
+	/**
+	 * @param string $className
+	 * @return object
+	 */
 	public function createInstance($className) {
 		$refClass = new ReflectionClass($className);
 		if($refClass->hasMethod('__construct')) {
@@ -60,9 +71,14 @@ class InstanceFactory {
 		foreach($constructor->getParameters() as $parameter) {
 			list($paramName, $className) = $this->getParamDetails($parameter);
 			if($className !== null) {
-				$params[] = $this->instantiateAndCache($className);
+				$params[] = $this->getInstance($className);
 			} elseif(array_key_exists($paramName, $this->values)) {
-				$params[] = $this->values[$paramName];
+				$registeredService = $this->values[$paramName];
+				if(is_callable($registeredService)) {
+					$params[] = call_user_func($registeredService);
+				} else {
+					$params[] = $registeredService;
+				}
 			} elseif($this->sl !== null && $this->sl->has($paramName)) {
 				$params[] = $this->sl->resolve($paramName, $this);
 			} else {
@@ -84,16 +100,5 @@ class InstanceFactory {
 			$className = $class->getName();
 		}
 		return array($paramName, $className);
-	}
-
-	/**
-	 * @param string $className
-	 * @return object
-	 */
-	private function instantiateAndCache($className) {
-		$that = $this;
-		return $this->cache->get($className, function () use ($className, $that) {
-			return $that->createInstance($className);
-		});
 	}
 }

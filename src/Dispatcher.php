@@ -60,7 +60,7 @@ class Dispatcher {
 			if(array_key_exists($parameter->getName(), $params)) {
 				$value = $params[$parameter->getName()];
 			} else {
-				$value = null;
+				$value = $parameter->getDefaultValue();
 			}
 			$parameters[] = $value;
 		}

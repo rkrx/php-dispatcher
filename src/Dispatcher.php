@@ -2,6 +2,7 @@
 namespace Kir\Dispatching;
 
 use Exception;
+use ReflectionMethod;
 use ReflectionObject;
 
 class Dispatcher {
@@ -55,6 +56,16 @@ class Dispatcher {
 			throw new Exceptions\MethodNotFoundException("Missing method {$method}");
 		}
 		$refMethod = $refObject->getMethod($method);
+		$parameters = $this->buildParams($refMethod, $params);
+		return $refMethod->invokeArgs($instance, $parameters);
+	}
+
+	/**
+	 * @param ReflectionMethod $refMethod
+	 * @param array $params
+	 * @return array
+	 */
+	private function buildParams($refMethod, $params) {
 		$parameters = array();
 		foreach($refMethod->getParameters() as $parameter) {
 			if(array_key_exists($parameter->getName(), $params)) {
@@ -64,6 +75,6 @@ class Dispatcher {
 			}
 			$parameters[] = $value;
 		}
-		return $refMethod->invokeArgs($instance, $parameters);
+		return $parameters;
 	}
 }

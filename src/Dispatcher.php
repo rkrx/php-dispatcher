@@ -38,7 +38,7 @@ class Dispatcher {
 	 * @throws \Exception
 	 * @return mixed
 	 */
-	public function invokeMethod($instance, $method, $params) {
+	public function invokeMethod($instance, $method, array $params=array()) {
 		return $this->invoker->invoke($instance, $method, $params);
 	}
 
@@ -50,7 +50,7 @@ class Dispatcher {
 	 * @throws Exceptions\MethodNotFoundException
 	 * @return mixed
 	 */
-	public function invoke($className, $method, array $params) {
+	public function invoke($className, $method, array $params=array()) {
 		$instance = $this->createInstance($className);
 		return $this->invokeMethod($instance, $method, $params);
 	}

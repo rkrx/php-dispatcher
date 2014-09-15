@@ -39,7 +39,7 @@ class Dispatcher {
 	 * @return mixed
 	 */
 	public function invokeMethod($instance, $method, array $params = array()) {
-		return $this->invoker->invoke($this->serviceLocator, $instance, $method, $params);
+		return $this->invoker->invoke($instance, $method, $params);
 	}
 
 	/**

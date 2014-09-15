@@ -4,15 +4,14 @@ namespace Kir\Dispatching\InstanceFactories;
 use Kir\Dispatching\InstanceFactory;
 use Kir\Dispatching\ServiceLocator;
 use Kir\Dispatching\Tools;
-use Kir\Dispatching\Tools\CommonInstanceCache;
 use Kir\Dispatching\Tools\ParameterResolver;
 use ReflectionClass;
 
 class CommonInstanceFactory implements InstanceFactory {
 	/**
-	 * @var Tools\CommonInstanceCache
+	 * @var object[]
 	 */
-	private $cache = null;
+	private $instances = array();
 
 	/**
 	 * @var ParameterResolver
@@ -20,36 +19,40 @@ class CommonInstanceFactory implements InstanceFactory {
 	private $parameterResolver;
 
 	/**
+	 * @var ServiceLocator
+	 */
+	private $serviceLocator;
+
+	/**
+	 * @param ServiceLocator $serviceLocator
 	 * @param ParameterResolver $parameterResolver
 	 */
-	public function __construct(ParameterResolver $parameterResolver) {
-		$this->cache = new CommonInstanceCache();
+	public function __construct(ServiceLocator $serviceLocator, ParameterResolver $parameterResolver) {
 		$this->parameterResolver = $parameterResolver;
+		$this->serviceLocator = $serviceLocator;
 	}
 
 	/**
-	 * @param ServiceLocator $serviceLocator
 	 * @param string $className
 	 * @param array $params
 	 * @return object
 	 */
-	public function getInstance(ServiceLocator $serviceLocator, $className, array $params = array()) {
-		$that = $this;
-		return $this->cache->get($className, function () use ($className, $params, $serviceLocator, $that) {
-			return $that->createInstance($serviceLocator, $className, $params);
-		});
+	public function getInstance($className, array $params = array()) {
+		if(!array_key_exists($className, $this->instances)) {
+			$this->instances[$className] = $this->createInstance($className, $params);
+		}
+		return $this->instances[$className];
 	}
 
 	/**
-	 * @param ServiceLocator $serviceLocator
 	 * @param string $className
 	 * @param array $params
 	 * @return object
 	 */
-	public function createInstance(ServiceLocator $serviceLocator, $className, array $params = array()) {
+	public function createInstance($className, array $params = array()) {
 		$refClass = new ReflectionClass($className);
 		if($refClass->hasMethod('__construct')) {
-			$params = $this->parameterResolver->buildParamsFromRefClass($serviceLocator, $refClass, '__construct', $params);
+			$params = $this->parameterResolver->buildParamsFromRefClass($refClass, '__construct', $params);
 			return $refClass->newInstanceArgs($params);
 		}
 		return $refClass->newInstance();

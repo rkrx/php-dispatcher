@@ -38,19 +38,17 @@ class DispatcherTest extends PHPUnit_Framework_TestCase {
 	 * @return Dispatcher
 	 */
 	private function createDispatcher() {
-		$resolver = new ParameterResolver();
-		$instanceFactory = new CommonInstanceFactory($resolver);
+		$locator = new ClosureServiceLocator(function ($className, InstanceFactory $instanceFactory) {
+			return $instanceFactory->getInstance($className);
+		});
 
-		$locator = new ClosureServiceLocator(function ($className, InstanceFactory $instanceFactory, ServiceLocator $serviceLocator) {
-			return $instanceFactory->getInstance($serviceLocator, $className);
-		}, $instanceFactory);
-
-		$locator->addResolver('Kir\\Dispatching\\Mock\\TestClass2', function (InstanceFactory $instanceFactory) {
+		$locator->addResolver('Kir\\Dispatching\\Mock\\TestClass2', function () {
 			return new TestClass2(123);
 		});
 
 
-		$invoker = new MethodInvoker($resolver);
+		$parameterResolver = new ParameterResolver($locator);
+		$invoker = new MethodInvoker($parameterResolver);
 		return new Dispatcher($locator, $invoker);
 	}
 }

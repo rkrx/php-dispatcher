@@ -1,8 +1,10 @@
 <?php
 namespace Kir\Dispatching\ServiceLocators;
 
+use Kir\Dispatching\InstanceFactories\CommonInstanceFactory;
 use Kir\Dispatching\InstanceFactory;
 use Kir\Dispatching\ServiceLocator;
+use Kir\Dispatching\Tools\ParameterResolver;
 
 class ClosureServiceLocator implements ServiceLocator {
 	/**
@@ -31,6 +33,10 @@ class ClosureServiceLocator implements ServiceLocator {
 			};
 		}
 		$this->instantiateClosure = $instantiateClosure;
+		if($instanceFactory === null) {
+			$parameterResolver = new ParameterResolver($this);
+			$instanceFactory = new CommonInstanceFactory($this, $parameterResolver);
+		}
 		$this->instanceFactory = $instanceFactory;
 	}
 

@@ -42,7 +42,7 @@ class DispatcherTest extends PHPUnit_Framework_TestCase {
 			return $instanceFactory->getInstance($className);
 		});
 
-		$locator->addResolver('Kir\\Dispatching\\Mock\\TestClass2', function () {
+		$locator->addResolver('Kir\\Dispatching\\Mock\\TestClass2', function (InstanceFactory $instanceFactory) {
 			return new TestClass2(123);
 		});
 

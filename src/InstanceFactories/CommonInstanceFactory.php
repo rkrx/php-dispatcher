@@ -12,11 +12,6 @@ class CommonInstanceFactory implements InstanceFactory {
 	private $cache = null;
 
 	/**
-	 * @var array
-	 */
-	private $values = array();
-
-	/**
 	 * @var Tools\ParameterResolver
 	 */
 	private $parameterResolver;
@@ -27,16 +22,6 @@ class CommonInstanceFactory implements InstanceFactory {
 	public function __construct(Tools\ParameterResolver $parameterResolver) {
 		$this->cache = new Tools\CommonInstanceCache();
 		$this->parameterResolver = $parameterResolver;
-	}
-
-	/**
-	 * @param string $name
-	 * @param mixed $value
-	 * @return $this
-	 */
-	public function register($name, $value) {
-		$this->values[$name] = $value;
-		return $this;
 	}
 
 	/**

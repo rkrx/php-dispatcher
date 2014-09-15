@@ -51,6 +51,6 @@ class DispatcherTest extends PHPUnit_Framework_TestCase {
 		$locator->setInstanceFactory($instanceFactory);
 
 		$invoker = new MethodInvoker($resolver);
-		return new Dispatcher($instanceFactory, $invoker);
+		return new Dispatcher($locator, $invoker);
 	}
 }

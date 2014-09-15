@@ -10,17 +10,17 @@ class Dispatcher {
 	private $invoker = null;
 
 	/**
-	 * @var InstanceFactory
+	 * @var ServiceLocator
 	 */
-	private $instanceFactory;
+	private $serviceLocator;
 
 	/**
-	 * @param InstanceFactory $instanceFactory
+	 * @param ServiceLocator $serviceLocator
 	 * @param MethodInvoker $invoker
 	 */
-	public function __construct(InstanceFactory $instanceFactory, MethodInvoker $invoker) {
+	public function __construct(ServiceLocator $serviceLocator, MethodInvoker $invoker) {
 		$this->invoker = $invoker;
-		$this->instanceFactory = $instanceFactory;
+		$this->serviceLocator = $serviceLocator;
 	}
 
 	/**
@@ -28,7 +28,7 @@ class Dispatcher {
 	 * @return object
 	 */
 	public function createInstance($className) {
-		return $this->instanceFactory->createInstance($className);
+		return $this->serviceLocator->resolve($className, null);
 	}
 
 	/**

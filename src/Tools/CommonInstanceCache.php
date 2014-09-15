@@ -5,7 +5,7 @@ class CommonInstanceCache {
 	/**
 	 * @var object[]
 	 */
-	private $instances=array();
+	private $instances = array();
 
 	/**
 	 * @param string $key

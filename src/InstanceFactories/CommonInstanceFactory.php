@@ -44,7 +44,7 @@ class CommonInstanceFactory implements InstanceFactory {
 	 * @param array $params
 	 * @return object
 	 */
-	public function getInstance($className, array $params=array()) {
+	public function getInstance($className, array $params = array()) {
 		$that = $this;
 		return $this->cache->get($className, function () use ($className, $params, $that) {
 			return $that->createInstance($className, $params);
@@ -56,7 +56,7 @@ class CommonInstanceFactory implements InstanceFactory {
 	 * @param array $params
 	 * @return object
 	 */
-	public function createInstance($className, array $params=array()) {
+	public function createInstance($className, array $params = array()) {
 		$refClass = new ReflectionClass($className);
 		if($refClass->hasMethod('__construct')) {
 			$params = $this->parameterResolver->buildParamsFromRefClass($refClass, '__construct', $params);

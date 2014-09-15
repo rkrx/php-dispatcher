@@ -1,7 +1,6 @@
 <?php
 namespace Kir\Dispatching\ServiceLocators;
 
-use Closure;
 use Kir\Dispatching\InstanceFactory;
 use Kir\Dispatching\ServiceLocator;
 
@@ -81,7 +80,7 @@ class ClosureServiceLocator implements ServiceLocator {
 	 * @param object $caller
 	 * @return object
 	 */
-	public function resolve($interfaceName, $caller) {
+	public function resolve($interfaceName, $caller = null) {
 		if(array_key_exists($interfaceName, $this->interfaces)) {
 			return call_user_func($this->interfaces[$interfaceName], $this, $caller);
 		}

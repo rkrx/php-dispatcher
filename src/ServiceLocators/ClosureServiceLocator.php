@@ -82,8 +82,8 @@ class ClosureServiceLocator implements ServiceLocator {
 	 */
 	public function resolve($interfaceName, $caller = null) {
 		if(array_key_exists($interfaceName, $this->interfaces)) {
-			return call_user_func($this->interfaces[$interfaceName], $this, $caller);
+			return call_user_func($this->interfaces[$interfaceName], $this->instanceFactory, $caller);
 		}
-		return call_user_func($this->instantiateClosure, $interfaceName, $this, $caller);
+		return call_user_func($this->instantiateClosure, $interfaceName, $this->instanceFactory, $caller);
 	}
 }

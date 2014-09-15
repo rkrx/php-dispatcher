@@ -41,6 +41,17 @@ class ClosureServiceLocator implements ServiceLocator {
 	}
 
 	/**
+	 * @param array $resolvers
+	 * @return $this
+	 */
+	public function addResolvers(array $resolvers) {
+		foreach($resolvers as $interfaceName => $resolver) {
+			$this->addResolver($interfaceName, $resolver);
+		}
+		return $this;
+	}
+
+	/**
 	 * @param string $interfaceName
 	 * @param \Closure $resolver
 	 * @return $this

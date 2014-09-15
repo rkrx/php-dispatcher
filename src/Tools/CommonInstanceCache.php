@@ -1,7 +1,7 @@
 <?php
 namespace Kir\Dispatching\Tools;
 
-class InstanceCache {
+class CommonInstanceCache {
 	/**
 	 * @var object[]
 	 */

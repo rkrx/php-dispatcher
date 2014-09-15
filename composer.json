@@ -18,10 +18,7 @@
 	"autoload": {
 		"psr-4": {
 			"Kir\\Dispatching\\": "src/"
-		},
-		"files": [
-			"src/Tools/functions.php"
-		]
+		}
 	},
 	"autoload-dev": {
 		"psr-4": {

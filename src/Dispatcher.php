@@ -1,30 +1,45 @@
 <?php
 namespace Kir\Dispatching;
 
-use Exception;
-use ReflectionMethod;
-use ReflectionObject;
+use Kir\Dispatching\Tools\MethodInvoker;
 
 class Dispatcher {
 	/**
-	 * @var callable
+	 * @var MethodInvoker
 	 */
-	private $classFactory;
+	private $invoker = null;
 
 	/**
-	 * @return callable
+	 * @var InstanceFactory
 	 */
-	public function getClassFactory() {
-		return $this->classFactory;
+	private $instanceFactory;
+
+	/**
+	 * @param InstanceFactory $instanceFactory
+	 * @param MethodInvoker $invoker
+	 */
+	public function __construct(InstanceFactory $instanceFactory, MethodInvoker $invoker) {
+		$this->invoker = $invoker;
+		$this->instanceFactory = $instanceFactory;
 	}
 
 	/**
-	 * @param callable $callable
-	 * @return $this
+	 * @param string $className
+	 * @return object
 	 */
-	public function setClassFactory($callable) {
-		$this->classFactory = $callable;
-		return $this;
+	public function createInstance($className) {
+		return $this->instanceFactory->createInstance($className);
+	}
+
+	/**
+	 * @param object $instance
+	 * @param string $method
+	 * @param array $params
+	 * @throws \Exception
+	 * @return mixed
+	 */
+	public function invokeMethod($instance, $method, $params) {
+		return $this->invoker->invoke($instance, $method, $params);
 	}
 
 	/**
@@ -36,45 +51,7 @@ class Dispatcher {
 	 * @return mixed
 	 */
 	public function invoke($className, $method, array $params) {
-		$instance = call_user_func($this->classFactory, $className, $params);
-		if(!is_object($instance)) {
-			throw new Exceptions\BadInstanceFoundException();
-		}
-		return $this->invokeMethod($method, $instance, $params);
-	}
-
-	/**
-	 * @param string $method
-	 * @param object $instance
-	 * @param array $params
-	 * @throws Exception
-	 * @return mixed
-	 */
-	private function invokeMethod($method, $instance, $params) {
-		$refObject = new ReflectionObject($instance);
-		if(!$refObject->hasMethod($method)) {
-			throw new Exceptions\MethodNotFoundException("Missing method {$method}");
-		}
-		$refMethod = $refObject->getMethod($method);
-		$parameters = $this->buildParams($refMethod, $params);
-		return $refMethod->invokeArgs($instance, $parameters);
-	}
-
-	/**
-	 * @param ReflectionMethod $refMethod
-	 * @param array $params
-	 * @return array
-	 */
-	private function buildParams($refMethod, $params) {
-		$parameters = array();
-		foreach($refMethod->getParameters() as $parameter) {
-			if(array_key_exists($parameter->getName(), $params)) {
-				$value = $params[$parameter->getName()];
-			} else {
-				$value = $parameter->getDefaultValue();
-			}
-			$parameters[] = $value;
-		}
-		return $parameters;
+		$instance = $this->createInstance($className);
+		return $this->invokeMethod($instance, $method, $params);
 	}
 }

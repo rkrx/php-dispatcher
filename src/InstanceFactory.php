@@ -3,14 +3,16 @@ namespace Kir\Dispatching;
 
 interface InstanceFactory {
 	/**
+	 * @param ServiceLocator $serviceLocator
 	 * @param string $className
 	 * @return object
 	 */
-	public function getInstance($className);
+	public function getInstance(ServiceLocator $serviceLocator, $className);
 
 	/**
+	 * @param ServiceLocator $serviceLocator
 	 * @param string $className
 	 * @return object
 	 */
-	public function createInstance($className);
+	public function createInstance(ServiceLocator $serviceLocator, $className);
 } 

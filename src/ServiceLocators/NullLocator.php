@@ -13,11 +13,11 @@ class NullLocator implements ServiceLocator {
 	}
 
 	/**
-	 * @param string $service
+	 * @param string $interfaceName
 	 * @param object $caller
 	 * @return object
 	 */
-	public function resolve($service, $caller) {
+	public function resolve($interfaceName, $caller = null) {
 		return null;
 	}
 }

@@ -11,11 +11,6 @@ class ClosureServiceLocator implements ServiceLocator {
 	private $instantiateClosure;
 
 	/**
-	 * @var callable
-	 */
-	private $isResponsibleClosure;
-
-	/**
 	 * @var InstanceFactory
 	 */
 	private $instanceFactory = null;
@@ -27,22 +22,16 @@ class ClosureServiceLocator implements ServiceLocator {
 
 	/**
 	 * @param callable $instantiateClosure
-	 * @param callable $isResponsibleClosure
-	 * @internal param callable $closure
+	 * @param InstanceFactory $instanceFactory
 	 */
-	function __construct(\Closure $instantiateClosure = null, \Closure $isResponsibleClosure = null) {
+	function __construct(\Closure $instantiateClosure = null, InstanceFactory $instanceFactory = null) {
 		if($instantiateClosure === null) {
 			$instantiateClosure = function () {
 				return null;
 			};
 		}
 		$this->instantiateClosure = $instantiateClosure;
-		if($isResponsibleClosure === null) {
-			$isResponsibleClosure = function () {
-				return true;
-			};
-		}
-		$this->isResponsibleClosure = $isResponsibleClosure;
+		$this->instanceFactory = $instanceFactory;
 	}
 
 	/**
@@ -56,15 +45,6 @@ class ClosureServiceLocator implements ServiceLocator {
 	}
 
 	/**
-	 * @param InstanceFactory $instanceFactory
-	 * @return $this
-	 */
-	public function setInstanceFactory(InstanceFactory $instanceFactory) {
-		$this->instanceFactory = $instanceFactory;
-		return $this;
-	}
-
-	/**
 	 * @param string $interfaceName
 	 * @return bool
 	 */
@@ -72,7 +52,7 @@ class ClosureServiceLocator implements ServiceLocator {
 		if(array_key_exists($interfaceName, $this->interfaces)) {
 			return true;
 		}
-		return call_user_func($this->isResponsibleClosure, $interfaceName);
+		return false;
 	}
 
 	/**
@@ -82,8 +62,8 @@ class ClosureServiceLocator implements ServiceLocator {
 	 */
 	public function resolve($interfaceName, $caller = null) {
 		if(array_key_exists($interfaceName, $this->interfaces)) {
-			return call_user_func($this->interfaces[$interfaceName], $this->instanceFactory, $caller);
+			return call_user_func($this->interfaces[$interfaceName], $this->instanceFactory, $this, $caller);
 		}
-		return call_user_func($this->instantiateClosure, $interfaceName, $this->instanceFactory, $caller);
+		return call_user_func($this->instantiateClosure, $interfaceName, $this->instanceFactory, $this, $caller);
 	}
 }

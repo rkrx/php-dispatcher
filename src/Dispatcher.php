@@ -4,14 +4,9 @@ namespace Kir\Dispatching;
 use Kir\Dispatching\Tools\MethodInvoker;
 
 class Dispatcher {
-	/**
-	 * @var MethodInvoker
-	 */
+	/** @var MethodInvoker */
 	private $invoker = null;
-
-	/**
-	 * @var ServiceLocator
-	 */
+	/** @var ServiceLocator */
 	private $serviceLocator;
 
 	/**
